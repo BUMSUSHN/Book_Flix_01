@@ -47,17 +47,21 @@
 
         // posting 함수
         function post() {
-            let comment = $("#textarea-post").val()
+             let url = $('#url').val();
+             let star = $('#star').val();
+             let comment = $('#comment').val();
             let today = new Date().toISOString()
             $.ajax({
                 type: "POST",
                 url: "/posting",
                 data: {
-                    comment_give: comment,
+                    url_give: url,
+                    star_give: star,
+                    comment_give:comment,
                     date_give: today
                 },
                 success: function (response) {
-                    $("#modal-post").removeClass("is-active")
+                   console.log(response);
                                 window.location.reload()
                 }
             })
@@ -135,6 +139,12 @@
                             // 좋아요 총 갯수
                             let count_heart = post['count_heart'];
 
+                            //별 갯수에 맞는 사용법
+                           //.repeat(매개변수명) 자바스크립트에서 제공해주는 함수.
+                           // 예제에서는 스타변수를 매개변수로 해서 star_image라는 변수에 넣었다.
+                           // 따라서 밑의 ${star}를${star_image}로 변경해보자.
+                           let star_image = '⭐'.repeat(post['star']);
+
                             // ${class_heart} 좋아요 받아옴
                             let html_temp = `<div class="box" id="${post["_id"]}">
                                                 <article class="media">
@@ -146,12 +156,19 @@
                                                     </div>
                                                     <div class="media-content">
                                                         <div class="content">
-                                                            <p>
+
                                                                 <strong>${post['profile_name']}</strong> <small>@${post['username']}</small> <small>${time_before}</small>
+                                                                <div class="content1">
+                                                                <div>
+                                                                <img class="is-rounded" src="${post['image']}"alt="Image" style="width:50%">
+                                                                </div>
+                                                                <div>
+                                                                 ${post['title']}
                                                                 <br>
-                                                                ${post['comment']}
-                                                            </p>
-                                                        </div>
+                                                                 ${star_image}
+                                                                <br>
+                                                                <span id=dcomment>${post['comment']}</span>
+
                                                         <nav class="level is-mobile">
                                                             <div class="level-left">
                                                                 <a class="level-item is-sparta" aria-label="heart" onclick="toggle_like('${post['_id']}', 'heart')">
@@ -162,6 +179,13 @@
                                                             </div>
 
                                                         </nav>
+
+                                                        </div>
+
+
+                                                     </div>
+                                                </div>
+
                                                     </div>
                                                 </article>
                                             </div>`
@@ -171,6 +195,8 @@
                 }
             })
         }
+
+
 
         //서버에서 가져온 해당 포스트카드를 화면을 랜더링 하면서 실행.
         $(document).ready(function () {
