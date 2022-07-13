@@ -28,6 +28,7 @@ def home():
         # json이 아닌데?
         return render_template('index.html', user_info=user_info)
 
+
     except jwt.ExpiredSignatureError:
         return redirect(url_for("login", msg="로그인 시간이 만료되었습니다."))
     except jwt.exceptions.DecodeError:
@@ -38,6 +39,12 @@ def home():
 def signup():
     msg = request.args.get("msg")
     return render_template('signup.html', msg=msg)
+
+# 회원가입 페이지 이동할때
+@app.route('/home/')
+def home123():
+    msg = request.args.get("msg")
+    return render_template('home.html', msg=msg)
 
 
 @app.route('/login')
@@ -114,7 +121,22 @@ def save_img():
     token_receive = request.cookies.get('mytoken')
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-        # 프로필 업데이트
+        username = payload["id"]
+        name_receive = request.form["name_give"]
+        about_receive = request.form["about_give"]
+        new_doc = {
+            "profile_name": name_receive,
+            "profile_info": about_receive
+        }
+        if 'file_give' in request.files:
+            file = request.files["file_give"]
+            filename = secure_filename(file.filename)
+            extension = filename.split(".")[-1]
+            file_path = f"profile_pics/{username}.{extension}"
+            file.save("./static/" + file_path)
+            new_doc["profile_pic"] = filename
+            new_doc["profile_pic_real"] = file_path
+        db.users.update_one({'username': payload['id']}, {'$set': new_doc})
         return jsonify({"result": "success", 'msg': '프로필을 업데이트했습니다.'})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
@@ -178,18 +200,30 @@ def get_posts():
     try:
         payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
 
+        # 프로필 페이지에서 username이 유무에 따라 포스팅형식이 틀려짐.
+        username_receive = request.args.get("username_give")
+
+        # 포스팅 목록 받아오기
+        if username_receive == "":
+            # 분류해서 가져오는데 날짜별 내림차순으로 20개까지 db에서 가져온다.
+            posts = list(db.posts.find({}).sort("date", -1).limit(20))
+        else:
+            # 분류해서 가져오는데 해당 username의 날짜별 내림차순으로 20개까지 db에서 가져온다.
+            posts = list(db.posts.find({"username": username_receive}).sort("date", -1).limit(20))
+
         # 포스팅 목록 받아오기
         # 분류해서 가져오는데 날짜별 내림차순으로 20개까지 db에서 가져온다.
-        posts = list(db.posts.find({}).sort("date", -1).limit(20))
+        # posts = list(db.posts.find({}).sort("date", -1).limit(20))
         # 나중에 좋아요를 각각 구분해주기 위해 db의 _id를 고유한 값으로 사용하기 위해
         # db의 _id가 ObjectID 라는 자료형이라 문자열로 변환 해야한다.
         for post in posts:
             post["_id"] = str(post["_id"])
-            #좋아요 처리부분
+            # 좋아요 처리부분
             post["count_heart"] = db.likes.count_documents({"post_id": post["_id"], "type": "heart"})
-            post["heart_by_me"] = bool(db.likes.find_one({"post_id": post["_id"], "type": "heart", "username": payload['id']}))
+            post["heart_by_me"] = bool(
+                db.likes.find_one({"post_id": post["_id"], "type": "heart", "username": payload['id']}))
 
-        return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.","post":posts})
+        return jsonify({"result": "success", "msg": "포스팅을 가져왔습니다.", "post": posts})
     except (jwt.ExpiredSignatureError, jwt.exceptions.DecodeError):
         return redirect(url_for("home"))
 

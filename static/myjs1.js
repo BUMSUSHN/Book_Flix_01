@@ -103,11 +103,18 @@
 
         // posting card 만드는 함수
 
-        function get_posts() {
+        function get_posts(username) {
+
+             //username이 없으면 username을 빈칸으로 하겠다.
+                if (username==undefined) {
+                    username=""
+                }
+
             $("#post-box").empty()
             $.ajax({
                 type: "GET",
-                url: "/get_posts",
+                //url: "/get_posts",
+                url: `/get_posts?username_give=${username}`,
                 data: {},
                 success: function (response) {
                     console.log(response);
@@ -199,7 +206,7 @@
 
 
         //서버에서 가져온 해당 포스트카드를 화면을 랜더링 하면서 실행.
-        $(document).ready(function () {
-            get_posts()
-        })
+//        $(document).ready(function () {
+//            get_posts()
+//        })
 

@@ -30,6 +30,9 @@
           rel="stylesheet">
 
     <script>
+          $(document).ready(function () {
+            get_posts()
+        })
 
          function open_box(){
         $('#wrap').show()
@@ -52,7 +55,7 @@
         <a class="navbar-item" href="/">
             <img src="{{ url_for('static', filename='books.png') }}">
             <strong class="is-sparta_title"
-                    style="font-family: 'Stylish', sans-serif;font-size: larger;">BookFlex</strong>
+                    style="font-family: 'Stylish', sans-serif;font-size: larger;">BookFlix</strong>
         </a>
 
 <!--        <a class="navbar-item" href="/api/membership">-->
