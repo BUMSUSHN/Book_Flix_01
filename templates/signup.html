@@ -3,7 +3,12 @@
 <head>
 
     <!-- Webpage Title -->
-    <title>Log In | BOOK FLIX</title>
+    <title>Sign Up | BOOK FLIX</title>
+    <meta property="og:title" content="BookFlex"/>
+    <meta property="og:description" content="mini project"/>
+    <meta property="og:image" content="{{ url_for('static', filename='books.png') }}"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='books.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='books.png') }}" type="image/x-icon">
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -248,7 +253,6 @@
 <body>
         <div class="top">
          <section class="hero is-white">
-                <button onclick="window.location.href = '/'"  class="hbtn" >home</button>
              <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
                     <h1 class="title is-sparta">BOOK FLIX</h1>
                  <h3 class="subtitle is-sparta">세상을 읽자</h3>

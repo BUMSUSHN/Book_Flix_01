@@ -3,7 +3,12 @@
 <head>
 
     <!-- Webpage Title -->
-    <title>Log In | SWEETER</title>
+    <title>Log In | BOOK FLIX</title>
+    <meta property="og:title" content="BookFlex"/>
+    <meta property="og:description" content="mini project"/>
+    <meta property="og:image" content="{{ url_for('static', filename='books.png') }}"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='books.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='books.png') }}" type="image/x-icon">
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -68,6 +73,7 @@
         .help {
             color: gray;
         }
+
 
     </style>
     <script>
@@ -235,12 +241,12 @@
 
 
 
+
     </script>
 
 </head>
 <body>
 <section class="hero is-white">
-    <button class="button is-left" onclick="window.location.href='/'">홈으로</button>
     <div class="hero-body has-text-centered" style="padding-bottom:1rem;margin:auto;">
         <h1 class="title is-sparta">로그인 페이지</h1>
     </div>

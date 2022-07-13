@@ -3,17 +3,16 @@
 <head>
 
     <!-- Webpage Title -->
-    <title>{{ user_info.name }} | SWEETER</title>
+    <title>{{ user_info.name }} | BOOK FLIX</title>
+    <meta property="og:title" content="BookFlex"/>
+    <meta property="og:description" content="mini project"/>
+    <meta property="og:image" content="{{ url_for('static', filename='books.png') }}"/>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='books.png') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', filename='books.png') }}" type="image/x-icon">
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <meta property="og:title" content="스위터 - 세상을 달달하게"/>
-    <meta property="og:description" content="mini project for Web Plus"/>
-    <meta property="og:image" content="{{ url_for('static', filename='ogimg.png') }}"/>
 
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
